@@ -80,6 +80,8 @@ class StreamLabs(BoardBase):
             if width > 0 and height > 0:
                 self.matrix.draw_rectangle(pos, (width, height), color)
 
+        font1 = ImageFont.truetype(f'{self.board_dir}/assets/fonts/04B_24__.TTF', 14)
+        font4 = ImageFont.truetype(f'{self.board_dir}/assets/fonts/retro_computer.ttf', 12)
         streamlabs_image = Image.open(f'{self.board_dir}/assets/images/streamlabs.png').resize((32,32))
         
         page = 1
@@ -185,20 +187,20 @@ class StreamLabs(BoardBase):
             d_x0 = 16 + x1 + 1
             e_x0 = 16 + x1 + x2 + 2
 
-            self.matrix.draw_text((3,y0),rVols[i]['date'].strftime("%a")[0:1],font=self.font.medium,fill=(242,242,242))
+            self.matrix.draw_text((3,y0),rVols[i]['date'].strftime("%a")[0:1],font=font4,fill=(242,242,242))
             _draw_rect_safe((m_x0,y0),(x1,8),morn)
             _draw_rect_safe((d_x0,y0),(x2,8),day)
             _draw_rect_safe((e_x0,y0),(x3,8),evening)
  
         # draw the stuff
         nowVol = math.ceil(summary['today'])
-        self.matrix.draw_text((27,1),  "Now".ljust(3) + ":".ljust(2),font=self.font.large,fill=(242,242,242))
-        self.matrix.draw_text((54,1),  str(nowVol).ljust(4),font=self.font.large,fill=(242,242,242))
+        self.matrix.draw_text((27,1),  "Now".ljust(3) + ":".ljust(2),font=font1,fill=(242,242,242))
+        self.matrix.draw_text((54,1),  str(nowVol).ljust(4),font=font1,fill=(242,242,242))
         
         #max 
         self.matrix.draw_rectangle((16+maxBar+2,28),(1,36), maxColor)
-        self.matrix.draw_text((27,15), "Max".ljust(3) + ":".ljust(2),font=self.font.large,fill=(242,242,242))
-        self.matrix.draw_text((54,15), str(maxGal).ljust(4),font=self.font.large,fill=(242,33,222))
+        self.matrix.draw_text((27,15), "Max".ljust(3) + ":".ljust(2),font=font1,fill=(242,242,242))
+        self.matrix.draw_text((54,15), str(maxGal).ljust(4),font=font1,fill=(242,33,222))
        
         #avg
         # Draw average markers only when they have positive width; use a 1px marker otherwise
@@ -206,10 +208,10 @@ class StreamLabs(BoardBase):
             _draw_rect_safe((16+avgBar+2,28),(1,36), avgColor)
         if avgyBar > 0:
             _draw_rect_safe((16+avgyBar+2,28),(1,36), avgyColor)
-        self.matrix.draw_text((76,1), f"{now.strftime('%b')}:",font=self.font.large,fill=(242,242,242))
-        self.matrix.draw_text((104,1), str(round(avgGal)).ljust(3),font=self.font.large,fill=avgColor)
-        self.matrix.draw_text((76,15), "A.YR:",font=self.font.large,fill=(242,242,242))
-        self.matrix.draw_text((104,15),  str(round(avgGaly)).ljust(4),font=self.font.large,fill=avgyColor)
+        self.matrix.draw_text((76,1), f"{now.strftime('%b')}:",font=font1,fill=(242,242,242))
+        self.matrix.draw_text((104,1), str(round(avgGal)).ljust(3),font=font1,fill=avgColor)
+        self.matrix.draw_text((76,15), "A.YR:",font=font1,fill=(242,242,242))
+        self.matrix.draw_text((104,15),  str(round(avgGaly)).ljust(4),font=font1,fill=avgyColor)
         
         self.matrix.render()
         self.sleepEvent.wait(30)
