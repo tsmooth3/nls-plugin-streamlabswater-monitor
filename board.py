@@ -7,7 +7,7 @@ import math
 import os
 import requests
 
-from PIL import Image
+from PIL import Image, ImageFont
 from boards.base_board import BoardBase
 from data.data import Data
 from datetime import datetime, timedelta
