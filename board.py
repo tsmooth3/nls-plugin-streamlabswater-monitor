@@ -70,6 +70,16 @@ class StreamLabs(BoardBase):
 
         self.matrix.clear()
 
+        # Helper to avoid calling draw_rectangle with zero or negative sizes
+        def _draw_rect_safe(pos, size, color):
+            # size is expected as (width, height)
+            try:
+                width, height = size
+            except Exception:
+                return
+            if width > 0 and height > 0:
+                self.matrix.draw_rectangle(pos, (width, height), color)
+
         streamlabs_image = Image.open(f'{self.board_dir}/assets/images/streamlabs.png').resize((32,32))
         
         page = 1
@@ -176,9 +186,9 @@ class StreamLabs(BoardBase):
             e_x0 = 16 + x1 + x2 + 2
 
             self.matrix.draw_text((3,y0),rVols[i]['date'].strftime("%a")[0:1],font=self.font.medium,fill=(242,242,242))
-            self.matrix.draw_rectangle((m_x0,y0),(x1,8),morn)
-            self.matrix.draw_rectangle((d_x0,y0),(x2,8),day)
-            self.matrix.draw_rectangle((e_x0,y0),(x3,8),evening)
+            _draw_rect_safe((m_x0,y0),(x1,8),morn)
+            _draw_rect_safe((d_x0,y0),(x2,8),day)
+            _draw_rect_safe((e_x0,y0),(x3,8),evening)
  
         # draw the stuff
         nowVol = math.ceil(summary['today'])
@@ -190,9 +200,12 @@ class StreamLabs(BoardBase):
         self.matrix.draw_text((27,15), "Max".ljust(3) + ":".ljust(2),font=self.font.large,fill=(242,242,242))
         self.matrix.draw_text((54,15), str(maxGal).ljust(4),font=self.font.large,fill=(242,33,222))
        
-        #avg 
-        self.matrix.draw_rectangle((16+avgBar+2,28),(0,36), avgColor)
-        self.matrix.draw_rectangle((16+avgyBar+2,28),(0,36), avgyColor)
+        #avg
+        # Draw average markers only when they have positive width; use a 1px marker otherwise
+        if avgBar > 0:
+            _draw_rect_safe((16+avgBar+2,28),(1,36), avgColor)
+        if avgyBar > 0:
+            _draw_rect_safe((16+avgyBar+2,28),(1,36), avgyColor)
         self.matrix.draw_text((76,1), f"{now.strftime('%b')}:",font=self.font.large,fill=(242,242,242))
         self.matrix.draw_text((104,1), str(round(avgGal)).ljust(3),font=self.font.large,fill=avgColor)
         self.matrix.draw_text((76,15), "A.YR:",font=self.font.large,fill=(242,242,242))
