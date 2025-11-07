@@ -1,0 +1,7 @@
+{
+    "streamlabs_token": "<apikey>",
+    "barMax": 112,
+    "chartMax": 260,
+    "historicalDays": 30,
+    "enabled": true
+}

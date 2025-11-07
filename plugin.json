@@ -1,0 +1,22 @@
+{
+  "name": "streamlabs_water_monitor",
+  "version": "2025.11.06",
+  "description": "Stream Labs Water Monitor",
+  "author": "tsmooth3",
+  "enabled": true,
+  "boards": [
+    {
+      "id": "streamlabs_water_monitor",
+      "class_name": "StreamLabs",
+      "module": "board"
+    }
+  ],
+  "requirements": {
+    "app_version": ">=2025.10.01",
+    "python_dependencies": ["requests"]
+  },
+
+  "preserve_files": [
+    "config.json"
+  ]
+}
