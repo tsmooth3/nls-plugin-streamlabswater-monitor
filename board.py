@@ -162,17 +162,23 @@ class StreamLabs(BoardBase):
             try:
                 x2 = bars[i+1]
             except:
-                x2 = 0
+                x2 = 1
     
             try:
                 x3 = bars[i+2]
             except:
-                x3 = 0
+                x3 = 2
 
-            self.matrix.draw_text((3,30+(i*4)),rVols[i]['date'].strftime("%a")[0:1],font=self.font.medium,fill=(242,242,242))
-            self.matrix.draw_rectangle((16,30+(i*4)),(x1,8),morn)
-            self.matrix.draw_rectangle((16+x1+1,30+(i*4)),(x2,8),day)
-            self.matrix.draw_rectangle((16+x1+x2+2,30+(i*4)),(x3,8),evening)
+            y0 = 30 + (i*4)
+            
+            m_x0 = 16
+            d_x0 = 16 + x1 + 1
+            e_x0 = 16 + x1 + x2 + 2
+
+            self.matrix.draw_text((3,y0),rVols[i]['date'].strftime("%a")[0:1],font=self.font.medium,fill=(242,242,242))
+            self.matrix.draw_rectangle((m_x0,y0),(x1,8),morn)
+            self.matrix.draw_rectangle((d_x0,y0),(x2,8),day)
+            self.matrix.draw_rectangle((e_x0,y0),(x3,8),evening)
  
         # draw the stuff
         nowVol = math.ceil(summary['today'])
